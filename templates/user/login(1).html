@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}
+    用户登录
+{% endblock %}
+{% block mycss %}
+    <link href="{% static  'css/register.css' %}" rel="stylesheet" type="text/css" media="all"/>
+    <!-- css files -->
+
+    <!-- Online-fonts -->
+    <link href="//fonts.googleapis.com/css?family=Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&amp;subset=latin-ext,vietnamese"
+          rel="stylesheet">
+    <!-- //Online-fonts -->
+{% endblock %}
+
+{% block content %}
+    <div class="main">
+        <div class="main-w3l">
+            <h1 class="logo-w3">个人博客用户登录</h1>
+            <ul>
+                <li>
+                    <div class="w3layouts-main">
+                        <h2><span>请登录</span></h2>
+                        <p>{{ msg }} {{ errors }}</p>
+                        <form action="{% url 'user:login' %}" method="post"> {% csrf_token %}
+                            <input placeholder="用户名" name="username" type="text" required="">
+                            <input placeholder="密码" name="password" type="password" id="password1" required="">
+                            <input type="submit" value="用户登录" name="login">
+                        </form>
+                    </div>
+                </li>
+{#                <li> 验证码登录#}
+{#                    <div class="w3layouts-main">#}
+{#                        <h2><span>请登录</span></h2>#}
+{#                        <p>{{ msg }} {{ errors }}</p>#}
+{#                        <form action="{% url 'user:login' %}" method="post"> {% csrf_token %}#}
+{#                            <input placeholder="用户名" name="username" type="text" required="">#}
+{#                            <input placeholder="验证码" name="check" type="text" id="password1" required="">#}
+{#                            <input type="button" value="发送验证码" id="btncheck">#}
+{#                            <input type="submit" value="用户登录" name="login">#}
+{#                        </form>#}
+{#                    </div>#}
+{#                </li>#}
+            </ul>
+        </div>
+    </div>
+{% endblock %}
