@@ -21,6 +21,8 @@
             <div class="w3layouts-main">
                 <h2><span>现在注册</span></h2>
                 <p>{{ msg }}</p>
+
+{#                注册表单#}
                 <form action="{% url 'user:register' %}" method="post">
                     {% csrf_token %}
                     <input placeholder="用户名" name="username" type="text" required="">
@@ -30,6 +32,7 @@
                     <input placeholder="确认密码" name="password" type="password" id="password2" required="">
                     <input type="submit" value="提交注册" name="login">
                 </form>
+
             </div>
 
 
@@ -55,14 +58,14 @@
             document.getElementById("password2").onchange = validatePassword;
         }
 
+        {# 校验两次输入密码是否一致 #}
         function validatePassword() {
             var pass2 = document.getElementById("password2").value;
             var pass1 = document.getElementById("password1").value;
-            if (pass1 != pass2)
-                document.getElementById("password2").setCustomValidity("Passwords Don't Match");
-            else
-                document.getElementById("password2").setCustomValidity('');
-            //empty string means no validation error
+            if (pass1 !== pass2)
+                document.getElementById("password2").setCustomValidity("密码不一致");
+            {#else#}
+            {#    document.getElementById("password2").setCustomValidity('');#}
         }
     </script>
 {% endblock %}
