@@ -1,20 +1,19 @@
 {% extends 'base.html' %}
 {% load static %}
+
 {% block title %}
     用户注册
 {% endblock %}
+
 {% block mycss %}
     <link href="{% static  'css/register.css' %}" rel="stylesheet" type="text/css" media="all"/>
-    <!-- css files -->
 
-    <!-- Online-fonts -->
     <link href="//fonts.googleapis.com/css?family=Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&amp;subset=latin-ext,vietnamese"
           rel="stylesheet">
-    <!-- //Online-fonts -->
 {% endblock %}
 
 {% block content %}
-    <!-- Main Content -->
+
     <div class="main">
         <div class="main-w3l">
             <h1 class="logo-w3">个人博客用户注册</h1>
@@ -34,8 +33,6 @@
                 </form>
 
             </div>
-
-
         </div>
     </div>
 {% endblock %}
@@ -64,8 +61,8 @@
             var pass1 = document.getElementById("password1").value;
             if (pass1 !== pass2)
                 document.getElementById("password2").setCustomValidity("密码不一致");
-            {#else#}
-            {#    document.getElementById("password2").setCustomValidity('');#}
+            else
+                document.getElementById("password2").setCustomValidity('');
         }
     </script>
 {% endblock %}

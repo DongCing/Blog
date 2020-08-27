@@ -30,11 +30,9 @@
     <div style="text-align: right;padding-top: 20px;padding-right:10px;font-size: 18px;">
         {% if request.user.is_authenticated %}
             欢迎！<a href="#">{{ request.user.username }}</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-{#            <a href="{% url 'user:logout' %}">注销</a>#}
-            <a href="#">注销</a>
+            <a href="{% url 'user:logout' %}">注销</a>
         {% else %}
-{#            <a href="{% url 'user:login' %}"> 登录</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#}
-            <a href="#"> 登录</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="{% url 'user:login' %}"> 登录</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <a href="{% url 'user:register' %}">注册</a>
         {% endif %}
     </div>
