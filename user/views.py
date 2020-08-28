@@ -1,13 +1,15 @@
+from captcha.models import CaptchaStore
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.handlers.modwsgi import check_password
 from django.contrib.auth.hashers import make_password
 from django.db.models import Q
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
 
-from user.forms import UserRegisterForm, RegisterForm, LoginForm
+from user.forms import UserRegisterForm, RegisterForm, LoginForm, CaptchaTestForm
 from user.models import UserProfile
+from user.utils import util_sendmsg, send_email
 
 
 def index(request):
@@ -75,3 +77,105 @@ def user_logout(request):
     logout(request)   # django 自带的退出函数
 
     return redirect(reverse('index'))
+
+
+# 手机验证码登录
+def code_login(request):
+    if request.method == 'GET':
+        return render(request, 'user/codelogin.html')
+    else:
+        # 获取表单中填写的验证码和手机号
+        mobile = request.POST.get('mobile')
+        code = request.POST.get('code')
+
+        # 根据mobile去session中获取服务端验证码
+        check_code = request.session.get(mobile)
+        if code == check_code:
+            user = UserProfile.objects.filter(mobile=mobile).first()
+            # user = authenticate(username=user.username, password=user.password)
+            print(user)
+            if user:
+                login(request, user)
+                return redirect(reverse('index'))
+            else:
+                return HttpResponse('验证失败！')
+        else:
+            return render(request, 'user/codelogin.html', context={'msg': '验证码有误！'})
+
+
+# 发送验证码路由  ajax发过来的请求
+def send_code(request):
+    mobile = request.GET.get('mobile')
+    data = {}
+    if UserProfile.objects.filter(mobile=mobile).exists():
+        # 发送验证码  第三方
+        json_result = util_sendmsg(mobile)
+        # 取值(获取状态码)：
+        status = json_result.get('code')
+        if status == 200:
+            # 获取验证码
+            check_code = json_result.get('obj')
+            # 使用session保存, key号码
+            request.session[mobile] = check_code
+
+            data['status'] = 200
+            data['msg'] = '验证码发送成功'
+        else:
+            data['status'] = 500
+            data['msg'] = '验证码发送失败'
+    else:
+        data['status'] = 501
+        data['msg'] = '用户不存在'
+
+    return JsonResponse(data)
+
+
+# 忘记密码
+def forget_password(request):
+    if request.method == 'GET':
+        form = CaptchaTestForm()
+        return render(request, 'user/forget_pwd.html', context={'form': form})
+    else:
+        # 获取提交的邮箱，发送邮件，通过发送的邮箱链接设置新的密码
+        email = request.POST.get('email')
+        # 给此邮箱地址发送邮件
+        result = send_email(email, request)
+        if result:
+            return HttpResponse("邮件发送成功！赶快去邮箱更改密码！<a href='/'>返回首页>>> </a>")
+
+
+# 更新密码
+# def update_pwd(request):
+#     if request.method == 'GET':
+#         c = request.GET.get('c')
+#         return render(request, 'user/update_pwd.html', context={'c': c})
+#     else:
+#         code = request.POST.get('code')
+#         uid = request.session.get(code)
+#         user = UserProfile.objects.get(pk=uid)
+#         # 获取密码
+#         pwd = request.POST.get('password')
+#         repwd = request.POST.get('repassword')
+#         if pwd == repwd and user:
+#             pwd = make_password(pwd)
+#             user.password = pwd
+#             user.save()
+#             return render(request, 'user/update_pwd.html', context={'msg': '用户密码更新成功！'})
+#         else:
+#             return render(request, 'user/update_pwd.html', context={'msg': '更新失败！'})
+#
+#
+# # 定义一个路由验证验证码
+def valide_code(request):
+    if request.is_ajax():
+        key = request.GET.get('key')
+        code = request.GET.get('code')
+
+        captche = CaptchaStore.objects.filter(hashkey=key).first()
+        if captche.response == code.lower():
+            # 正确
+            data = {'status': 1}
+        else:
+            # 错误的
+            data = {'status': 0}
+        return JsonResponse(data)
