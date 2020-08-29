@@ -144,34 +144,43 @@ def forget_password(request):
             return HttpResponse("邮件发送成功！赶快去邮箱更改密码！<a href='/'>返回首页>>> </a>")
 
 
-# 更新密码
-# def update_pwd(request):
-#     if request.method == 'GET':
-#         c = request.GET.get('c')
-#         return render(request, 'user/update_pwd.html', context={'c': c})
-#     else:
-#         code = request.POST.get('code')
-#         uid = request.session.get(code)
-#         user = UserProfile.objects.get(pk=uid)
-#         # 获取密码
-#         pwd = request.POST.get('password')
-#         repwd = request.POST.get('repassword')
-#         if pwd == repwd and user:
-#             pwd = make_password(pwd)
-#             user.password = pwd
-#             user.save()
-#             return render(request, 'user/update_pwd.html', context={'msg': '用户密码更新成功！'})
-#         else:
-#             return render(request, 'user/update_pwd.html', context={'msg': '更新失败！'})
-#
-#
-# # 定义一个路由验证验证码
-def valide_code(request):
+# 更新密码,对应找回密码邮件里的url
+def update_pwd(request):
+    if request.method == 'GET':
+        # 点击邮箱中的重置密码链接,获取链接中的 c 参数,即user id对应的随机数
+        c = request.GET.get('c')
+        # 做为隐藏表单域传递到HTML中
+        return render(request, 'user/update_pwd.html', context={'c': c})
+    else:
+        # 根据提交的表单信息,获取  name = code 的表单信息,即user id对应的随机数
+        code = request.POST.get('code')
+        # 根据该随机数,即session中的key,获取session中的user id
+        uid = request.session.get(code)
+        # 获取用户对象
+        user = UserProfile.objects.get(pk=uid)
+        # 获取密表单中的两个输入密码
+        pwd = request.POST.get('password')
+        repwd = request.POST.get('repassword')
+        if pwd == repwd and user:
+            # 将输入的密码加密
+            pwd = make_password(pwd)
+            # 保存新密码
+            user.password = pwd
+            user.save()
+            return render(request, 'user/update_pwd.html', context={'msg': '用户密码更新成功！'})
+        else:
+            return render(request, 'user/update_pwd.html', context={'msg': '更新失败！'})
+
+
+# 定义一个路由验证验证码
+def validate_code(request):
+    # 判断请求是否是ajax
     if request.is_ajax():
         key = request.GET.get('key')
         code = request.GET.get('code')
 
         captche = CaptchaStore.objects.filter(hashkey=key).first()
+        # response是验证码数据库captcha_captstore中的小写验证码
         if captche.response == code.lower():
             # 正确
             data = {'status': 1}

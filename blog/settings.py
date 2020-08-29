@@ -137,3 +137,16 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, '/media')
+
+# 发送邮箱设置
+EMAIL_HOST = 'smtp.163.com'
+
+EMAIL_PORT = 25
+
+EMAIL_HOST_USER = 'dongcheng2019@163.com'
+# 授权码
+EMAIL_HOST_PASSWORD = 'TUMBOATDWPCYWVQL'
+
+SERVER_HOST = '127.0.0.1'
+
+SERVER_PORT = '9000'

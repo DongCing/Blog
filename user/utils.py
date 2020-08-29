@@ -10,6 +10,7 @@ from django.core.mail import send_mail
 # from qiniu import Auth, put_file, put_data
 #
 # from djangoday4.settings import EMAIL_HOST_USER, MEDIA_ROOT
+from blog.settings import EMAIL_HOST_USER
 from user.models import UserProfile
 
 
@@ -45,15 +46,16 @@ def util_sendmsg(mobile):
 def send_email(email, request):
     subject = '个人博客找回密码'
     user = UserProfile.objects.filter(email=email).first()
+    # 生成一个随机码,和用户ID绑定保存在session中,根据它找到用户ID
     ran_code = uuid.uuid4()
-    print(ran_code)
-    print(type(ran_code))
+    # print(ran_code)
+    # print(type(ran_code))
     ran_code = str(ran_code)
-    print(type(ran_code))
+    # print(type(ran_code))
     ran_code = ran_code.replace('-', '')
     request.session[ran_code] = user.id
     message = '''
-     可爱的用户:
+     尊敬的用户:
             <br>
             您好！此链接用户找回密码，请点击链接: <a href='http://127.0.0.1:8000/user/update_pwd?c=%s'>更新密码</a>，
             <br>

@@ -34,7 +34,7 @@
 {% block myjs %}
     <script>
       $(function(){
-          // 刷新动作
+          // 刷新动作,触发插件 captcha 的动作
         $('.captcha').click(function(){
             var img= $(this);
            $.getJSON('/captcha/refresh',function(data){
@@ -44,19 +44,24 @@
            })
         });
 
-        // 验证验证码是否正确
+        // 验证验证码是否正确,
+          // 图片验证码输入框,blur(失去输入光标焦点,即已输入验证码,开始进行验证码校验),focus(拿到光标焦点)
           $('#id_captcha_1').blur(function(){
               var $this = $(this);
               var key = $('#id_captcha_0').val();
               var code = $(this).val();
 
-              $.getJSON('{% url 'user:valide_code' %}',{key:key,code:code},function(data){
+              // 这里用Json传输key,code数据到url的views中,进行判断处理
+              // 得到返回的状态码
+              $.getJSON('{% url 'user:validate_code' %}',{key:key,code:code},function(data){
                     console.log(data)
 
+                  // 清空span中的内容,避免信息重复出现
+                  $('#result').remove();
                   if(data.status==1){
-                    $this.after('<span>验证码正确</span>')
+                    $this.after('<span id="result">验证码正确</span>')
                   }else{
-                    $this.after('<span>验证码错误</span>')
+                    $this.after('<span id="result">验证码错误</span>')
                   }
               })
           })
