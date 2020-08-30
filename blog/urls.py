@@ -15,7 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include, re_path
+from django.views.static import serve
 
+from blog.settings import MEDIA_ROOT
 from user.views import index
 
 urlpatterns = [
@@ -24,5 +26,7 @@ urlpatterns = [
     path('', index, name='index'),
     path('user/', include('user.urls', namespace='user')),
     re_path(r'^captcha/', include('captcha.urls')),
+    # 添加该路由,可以用url访问media资源
+    re_path(r'^media/(?P<path>.*)$', serve, {'document_root': MEDIA_ROOT}),
 
 ]

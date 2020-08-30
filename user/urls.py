@@ -16,7 +16,7 @@ urlpatterns = [
     path('validate_code', views.validate_code, name='validate_code'),
     path('update_pwd', views.update_pwd, name='update_pwd'),
 
-    # path('center', user_center, name='center'),  # 本地存储
+    path('center', views.user_center, name='center'),  # 本地存储
     # path('center1', user_center1, name='center1'),  # 云存储
     # path('test', test, name='test'),
 ]

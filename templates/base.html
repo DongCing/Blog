@@ -29,7 +29,7 @@
 <header>
     <div style="text-align: right;padding-top: 20px;padding-right:10px;font-size: 18px;">
         {% if request.user.is_authenticated %}
-            欢迎！<a href="#">{{ request.user.username }}</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            欢迎！<a href="{% url 'user:center' %}">{{ request.user.username }}</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <a href="{% url 'user:logout' %}">注销</a>
         {% else %}
             <a href="{% url 'user:login' %}"> 登录</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -45,12 +45,11 @@
     </div>
 
     <nav class="topnav" data-scroll-reveal="enter bottom over 1s after 1s">
-{#        <a href="{% url 'index' %}"><span>首页</span><span class="en">Home</span></a>#}
-        <a href="#"><span>首页</span><span class="en">Home</span></a>
+        <a href="{% url 'index' %}"><span>首页</span><span class="en">Home</span></a>
         <a href="manshenghuo.html"><span>写博客</span><span class="en">Life</span></a>
         <a href="learn.html"><span>学无止境</span><span class="en">Learn</span></a>
         <a href="learn.html"><span>关于我</span><span class="en">About</span></a>
-        <a href="about.html"><span>个人资料</span><span class="en">Detail</span></a>
+        <a href="{% url 'user:center' %}"><span>个人资料</span><span class="en">Detail</span></a>
         <a href="gbook.html"><span>留言</span><span class="en">Saying</span></a></nav>
 </header>
 

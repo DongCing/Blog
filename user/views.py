@@ -1,5 +1,6 @@
 from captcha.models import CaptchaStore
 from django.contrib.auth import logout, login, authenticate
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.handlers.modwsgi import check_password
 from django.contrib.auth.hashers import make_password
 from django.db.models import Q
@@ -188,3 +189,61 @@ def validate_code(request):
             # 错误的
             data = {'status': 0}
         return JsonResponse(data)
+
+
+# 用户的个人中心
+# 前提使用 login(request,user) 登录,user-->继承自abstractuser
+# 系统自带的检查用户是否登录的装饰器
+# settings中设置登录路由,配合装饰器在未登录情况下跳转登录界面
+@login_required
+def user_center(request):
+    user = request.user
+    if request.method == 'GET':
+        return render(request, 'user/center.html', context={'user': user})
+    else:
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        mobile = request.POST.get('mobile')
+        # 使用 FILES 获取头像
+        icon = request.FILES.get('icon')
+
+        # 更新用户
+        user.username = username
+        user.email = email
+        user.mobile = mobile
+        user.icon = icon  # ImageField(upload_to='')
+        user.save()
+
+        return render(request, 'user/center.html', context={'user': user})
+
+
+# @login_required
+# def user_center1(request):
+#     user = request.user
+#     if request.method == 'GET':
+#
+#         return render(request, 'user/center.html', context={'user': user})
+#     else:
+#         username = request.POST.get('username')
+#         email = request.POST.get('email')
+#         mobile = request.POST.get('mobile')
+#         icon = request.FILES.get('icon')  # 内存存储对象
+#
+#         user.username = username
+#         user.email = email
+#         user.mobile = mobile
+#
+#         # print(str(user.icon),type(user.icon))
+#         # 上传图片到七牛云
+#         save_path = upload_image(icon)
+#         # 得到云上的图片路径
+#         user.yunicon = save_path
+#         user.save()
+#
+#         return render(request, 'user/center.html', context={'user': user})
+#
+#
+# # from  django.db.models.fields.files import ImageFieldFile
+#
+# def test(request):
+#     return render(request, 'article/info.html')

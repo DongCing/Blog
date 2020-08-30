@@ -49,6 +49,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 'middleware.MyMiddleware.MiddleWare1',
+    # 'middleware.MyMiddleware.MiddleWare2',
+
 ]
 
 ROOT_URLCONF = 'blog.urls'
@@ -136,7 +139,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 MEDIA_URL = '/media/'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, '/media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # 发送邮箱设置
 EMAIL_HOST = 'smtp.163.com'
@@ -150,3 +153,6 @@ EMAIL_HOST_PASSWORD = 'TUMBOATDWPCYWVQL'
 SERVER_HOST = '127.0.0.1'
 
 SERVER_PORT = '9000'
+
+# 添加一个登陆路由  结合 @login_required
+LOGIN_URL = '/user/login'
