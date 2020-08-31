@@ -17,15 +17,23 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from django.views.static import serve
 
+import xadmin
 from blog.settings import MEDIA_ROOT
 from user.views import index
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    # path('admin/', admin.site.urls),
+    # 第三方admin
+    path('xadmin/', xadmin.site.urls),
+
     # path('user/', include('user.urls')),
     path('', index, name='index'),
     path('user/', include('user.urls', namespace='user')),
+    path('article/', include('article.urls', namespace='article')),
+
+    # 使用插件验证码
     re_path(r'^captcha/', include('captcha.urls')),
+
     # 添加该路由,可以用url访问media资源
     re_path(r'^media/(?P<path>.*)$', serve, {'document_root': MEDIA_ROOT}),
 

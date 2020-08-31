@@ -8,13 +8,18 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
 
+from article.models import Article
 from user.forms import UserRegisterForm, RegisterForm, LoginForm, CaptchaTestForm
 from user.models import UserProfile
 from user.utils import util_sendmsg, send_email
 
 
 def index(request):
-    return render(request, 'index.html')
+    # 根据点击量主页文章排序
+    farticles = Article.objects.all().order_by('-click_num')[:3]
+    # 按日期排序,使用切片截取8条文章
+    darticles = Article.objects.all().order_by('-date')[:8]
+    return render(request, 'index.html', context={'figure_articles': farticles, 'darticles': darticles})
 
 
 # 注册
