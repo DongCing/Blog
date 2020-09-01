@@ -37,4 +37,6 @@ urlpatterns = [
     # 添加该路由,可以用url访问media资源
     re_path(r'^media/(?P<path>.*)$', serve, {'document_root': MEDIA_ROOT}),
 
+    # 加载ckeditor(上传保存默认走该路径)
+    re_path(r'^ckeditor/', include('ckeditor_uploader.urls'))
 ]

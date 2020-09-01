@@ -41,7 +41,9 @@ INSTALLED_APPS = [
     'captcha',
     'article',
     'xadmin',   # xadmin
-    'crispy_forms', # xadmin
+    'crispy_forms',  # xadmin
+    'ckeditor',     # 添加ckeditor富文本编辑器
+    'ckeditor_uploader',    # ckeditor进行文件上传
 ]
 
 MIDDLEWARE = [
@@ -137,12 +139,13 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
-
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+# STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+# 生产环境的静态资源路径
+STATIC_ROOT = os.path.join(BASE_DIR, '/static/')
 
 MEDIA_URL = '/media/'
-
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+CKEDITOR_UPLOAD_PATH = "uploads/"
 
 # 发送邮箱设置
 EMAIL_HOST = 'smtp.163.com'

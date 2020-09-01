@@ -4,11 +4,10 @@ from django.core.paginator import Paginator
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 
-# Create your views here.
 from django.urls import reverse
 
-# from article.forms import ArticleForm
-from article.models import Article, Tag, Comment #Message
+from article.forms import ArticleForm
+from article.models import Article, Tag, Comment, Message
 
 
 # 文章详情
@@ -26,7 +25,7 @@ def article_detail(request):
             if article1 not in list_about and len(list_about) < 6:
                 list_about.append(article1)
 
-    # 查询评论数
+    # 过滤查询评论数
     comments = Comment.objects.filter(article_id=id)
 
     return render(request, 'article/info.html',
@@ -70,66 +69,67 @@ def article_show(request):
 
 
 # 写博客
-# @login_required
-# def write_article(request):
-#     if request.method == 'GET':
-#         aform = ArticleForm()
-#         return render(request, 'article/write.html', context={'form': aform})
-#     else:
-#         aform = ArticleForm(request.POST, request.FILES)
-#         if aform.is_valid():
-#             data = aform.cleaned_data
-#             article = Article()
-#             article.title = data.get('title')
-#             article.desc = data.get('desc')
-#             article.content = data.get('content')
-#             print(type(data.get('image')))
-#
-#             article.image = data.get('image')
-#             article.desc = data.get('desc')
-#             article.user = request.user  # 1对多 直接赋值
-#             article.save()
-#
-#             # 多对多 必须添加到文章保存的后面添加
-#             article.tags.set(data.get('tags'))
-#             return redirect(reverse('index'))
-#
-#         return render(request, 'article/write.html', context={'form': aform})
-#
-#
-# # 文章评论
-# def article_comment(request):
-#     # 直接接受
-#     nickname = request.GET.get('nickname')
-#     content = request.GET.get('saytext')
-#     aid = request.GET.get('aid')
-#
-#     comment = Comment.objects.create(nickname=nickname, content=content, article_id=aid)
-#
-#     if comment:
-#         data = {'status': 1}
-#     else:
-#         data = {'status': 0}
-#     return JsonResponse(data)
-#
-#
-# # 留言
-# def blog_message(request):
-#     messages = Message.objects.all()
-#     paginator = Paginator(messages, 8)
-#     # 获取页码数
-#     page = request.GET.get('page', 1)
-#     # 得到page对象
-#     page = paginator.get_page(page)
-#
-#     if request.method == 'GET':
-#         return render(request, 'article/lmessage.html', context={'page':page})
-#     else:
-#         name = request.POST.get('name')
-#         mycall = request.POST.get('mycall')
-#         lytext = request.POST.get('lytext')
-#         if name and lytext:
-#             message = Message.objects.create(nickname=name, icon=mycall, content=lytext)
-#             if message:
-#                 return redirect(reverse('article:message'))
-#         return render(request, 'article/lmessage.html', context={'page':page, 'error': '必须输入用户名和内容'})
+@login_required
+def write_article(request):
+    if request.method == 'GET':
+        aform = ArticleForm()
+        return render(request, 'article/write.html', context={'form': aform})
+    else:
+        aform = ArticleForm(request.POST, request.FILES)
+        if aform.is_valid():
+            # cleaned_data就是读取表单返回的值，返回类型为字典dict型
+            data = aform.cleaned_data
+            article = Article()
+            article.title = data.get('title')
+            article.desc = data.get('desc')
+            article.content = data.get('content')
+            print(type(data.get('image')))
+
+            article.image = data.get('image')
+            article.desc = data.get('desc')
+            article.user = request.user  # 1对多 直接赋值
+            article.save()
+
+            # 多对多 必须添加到文章保存的后面添加
+            article.tags.set(data.get('tags'))
+            return redirect(reverse('index'))
+
+        return render(request, 'article/write.html', context={'form': aform})
+
+
+# 文章评论
+def article_comment(request):
+    # 直接接受
+    nickname = request.GET.get('nickname')
+    content = request.GET.get('saytext')
+    aid = request.GET.get('aid')
+
+    comment = Comment.objects.create(nickname=nickname, content=content, article_id=aid)
+
+    if comment:
+        data = {'status': 1}
+    else:
+        data = {'status': 0}
+    return JsonResponse(data)
+
+
+# 留言
+def blog_message(request):
+    messages = Message.objects.all()
+    paginator = Paginator(messages, 8)
+    # 获取页码数
+    page = request.GET.get('page', 1)
+    # 得到page对象
+    page = paginator.get_page(page)
+
+    if request.method == 'GET':
+        return render(request, 'article/lmessage.html', context={'page': page})
+    else:
+        name = request.POST.get('name')
+        mycall = request.POST.get('mycall')
+        lytext = request.POST.get('lytext')
+        if name and lytext:
+            message = Message.objects.create(nickname=name, icon=mycall, content=lytext)
+            if message:
+                return redirect(reverse('article:message'))
+        return render(request, 'article/lmessage.html', context={'page': page, 'error': '必须输入用户名和内容'})

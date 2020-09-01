@@ -71,7 +71,6 @@
             <p><input type="text" name="uname" id="uname" placeholder="输入用户昵称"></p>
             <p>
                 <textarea name="saytext" id="saytext" cols="80" rows="6">
-
                 </textarea>
             </p>
             <p><input type="submit" value="评论" id='btncomment'></p>
@@ -85,16 +84,17 @@
         $(function () {
             // 得到按钮对象
             $('#btncomment').click(function () {
-                //从文本框中取值
+                // 从文本框中取值
                 var nickname = $('#uname').val();
                 var saytext = $('#saytext').val();
-                //发出请求
+                // 发出请求
                 $.getJSON('{% url 'article:comment' %}', {
                     nickname: nickname,
                     saytext: saytext,
                     aid: '{{ article.id }}'
                 }, function (data) {
-                    if(data.status==1){
+                    // 评论成功时,显示在页面
+                    if(data.status===1){
                         window.location.href='{% url 'article:detail' %}?id={{ article.id }}'
                     }
                 })
