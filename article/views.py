@@ -133,3 +133,7 @@ def blog_message(request):
             if message:
                 return redirect(reverse('article:message'))
         return render(request, 'article/lmessage.html', context={'page': page, 'error': '必须输入用户名和内容'})
+
+
+def about_me(request):
+    return render(request, 'article/about_me.html')
