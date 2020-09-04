@@ -7,18 +7,28 @@
 
 {% block mycss %}
     <style>
-       form>p{
-           margin: 5px 0;
-           font-size: 16px;
-       }
+        form {
+            margin: 30px 20px;
+            font-size: 16px;
+        }
+
+        form > p {
+            margin-bottom: 10px;
+        }
+
+        .button{
+            width: 60px;
+            height: 30px;
+            border-radius: 20%;
+        }
     </style>
 {% endblock %}
 
 {% block content %}
     <form action="{% url 'article:write' %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.media }}
         {{ form.as_p }}
-        <input type="submit" value="发表文章" class="btn btn-default">
+        {{ form.media }}
+        <input type="submit" value="发表文章" class="button">
     </form>
 {% endblock %}
