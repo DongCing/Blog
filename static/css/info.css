@@ -11,31 +11,59 @@
 .au02 { background: url(../images/date.png) no-repeat left center }
 .au03 b { color: #f5fafd; padding: 0 5px }
 .au04 { font-weight: normal; }
-.news_about { color: #F6F6F6; border: 1px solid #F3F3F3; padding: 10px; margin: 20px auto 15px auto; line-height: 23px; background: none repeat 0 0 rgba(246,246,246,0.5); }
+
+.news_about {
+    color: #F6F6F6;
+    border: 1px solid #F3F3F3;
+    padding: 10px;
+    margin: 20px auto 15px auto;
+    line-height: 23px;
+    background: none repeat 0 0 rgba(90, 114, 132, 0.5);
+}
 .news_about strong { color: #38485A; font-weight: 400 !important; font-size: 13px; padding-right: 8px; }
 .news_content { line-height: 24px; font-size: 14px; }
 .news_content p { overflow: hidden; padding-bottom: 4px; padding-top: 6px; word-wrap: break-word; }
 .tags a { background: #F4650E; padding: 3px 8px; margin: 0 5px 0 0; color: #fff; }
 .tags { margin: 10px 0; }
-.news_infos { line-height: 24px ;    text-align: justify;}
+
+.news_infos {
+    line-height: 24px ;
+    text-align: justify;
+    color: black;
+    border: 1px solid #000000;
+    padding: 10px;
+    margin: 20px auto 15px auto;
+    background: none repeat 0 0 rgb(255, 255, 255);
+}
+
 .news_infos p { margin-bottom: 10px }
 .news_infos img { max-width: 650px }
+
 .share { padding: 20px; }
 .nextinfo { line-height: 24px; width: 100%; background: #FFF;  overflow: hidden; }
 .nextinfo p { padding: 4px 10px; border-radius: 5px;color: #686868 }
 .nextinfo a{ color: #000;}
 .nextinfo a:hover { text-decoration: underline }
 
-.otherlink, .xzsm, .ffsm { width: 100%; background: #FFF; overflow: hidden;  }
+.otherlink, .xzsm, .ffsm {
+    width: 100%;
+    background: #96afc4;
+    overflow: hidden;
+}
 .otherlink h2 { border-bottom: #000 2px solid; line-height: 40px; font-size: 14px; background: url(../images/5794.png) left 10px center no-repeat; padding-left: 40px; color: #000 }
 .otherlink ul { margin: 10px 0; overflow:hidden; padding:0 20px }
 .otherlink li { line-height: 24px; height: 24px; display: block; width: 40%; float:left; overflow: hidden; padding-left: 10px; background:url(../images/navline.jpg) no-repeat left center }
 .otherlink li a{
     color: #686868;
 }
- .otherlink li a:hover { text-decoration: underline; color: #000 }
+.otherlink li a:hover { text-decoration: underline; color: #000 }
 
-.news_pl { margin: 10px 0; width: 100%; background: #FFF; overflow: hidden; margin: 20px 0 }
+.news_pl {
+    margin: 10px 0 0 0;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.76);
+    overflow: hidden;
+}
 .news_pl h2 { background: url(../images/newsbg03.png) no-repeat left 10px center; border-bottom: #000 2px solid; line-height: 40px; font-size: 14px; padding-left: 30px; color: #000 }
 .news_pl ul li{
     padding-top: 30px;
