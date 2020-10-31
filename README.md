@@ -1,8 +1,9 @@
 # Blog
 ## 前端
-主页面显示
+HTML CSS JavaScript
 
 ## 后端
+Django
 
 
 
