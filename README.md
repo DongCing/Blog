@@ -6,6 +6,7 @@ HTML CSS JavaScript
 Django
 
 ## 部署
+Nginx + Uwsgi
 
 
 
